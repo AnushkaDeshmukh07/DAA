@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Function to find the maximum number of stocks that can be bought
+int buyMaximumProducts(int n, int k, int price[]) {
+    vector<pair<int, int>> v;
+
+    // Create a vector of price and their respective indices
+    for (int i = 0; i < n; ++i) {
+        v.push_back(make_pair(price[i], i + 1));
+    }
+
+    // Sort the vector based on the price (ascending order)
+    sort(v.begin(), v.end());
+
+    // Variable to keep track of the maximum number of stocks
+    int ans = 0;
+
+    // Iterate through the sorted prices and calculate the maximum number of stocks
+    for (int i = 0; i < n; ++i) {
+        // Determine how many stocks can be bought with the available amount k
+        int max_stocks = min(v[i].second, k / v[i].first);
+        
+        // Increase the count of stocks
+        ans += max_stocks;
+        
+        // Deduct the corresponding money from k
+        k -= v[i].first * max_stocks;
+        
+        // If no money is left to buy more stocks, break
+        if (k <= 0) break;
+    }
+
+    return ans;
+}
+
+int main() {
+    int n, k;
+
+    cout << endl << "How many stocks do you want to enter: ";
+    cin >> n;
+
+    int price[n];
+
+    cout << endl << "Enter the Price of the " << n << " Stock(s):\n\n";
+    for (int i = 0; i < n; i++) {
+        cout << "Enter price of stock " << i + 1 << ": ";
+        cin >> price[i];
+    }
+
+    cout << endl << "Enter the amount available to buy the Stocks: ";
+    cin >> k;
+
+    cout << endl << "Maximum Number of Stocks: " << buyMaximumProducts(n, k, price) << endl;
+
+    return 0;
+}
