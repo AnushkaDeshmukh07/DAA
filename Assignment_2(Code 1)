@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+// Function to sort shops based on closing times and then by opening times
+void sortShops(int opening[], int closing[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (closing[j] > closing[j + 1] || 
+               (closing[j] == closing[j + 1] && opening[j] > opening[j + 1])) {
+                // Swap closing times
+                int temp = closing[j];
+                closing[j] = closing[j + 1];
+                closing[j + 1] = temp;
+
+                // Swap opening times
+                temp = opening[j];
+                opening[j] = opening[j + 1];
+                opening[j + 1] = temp;
+            }
+        }
+    }
+}
+
+// Function to find the maximum number of shops that can be visited
+int maximumShops(int opening[], int closing[], int n, int k) {
+    // Sort shops by their closing times and opening times
+    sortShops(opening, closing, n);
+
+    // To keep track of when each person is free
+    int persons[k];
+    for (int i = 0; i < k; i++) {
+        persons[i] = 0;
+    }
+
+    int count = 0;
+
+    // Try to assign each shop to a person
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < k; j++) {
+            if (persons[j] <= opening[i]) {
+                // Assign the shop to this person
+                persons[j] = closing[i];
+                count++;
+                break;
+            }
+        }
+    }
+
+    return count;
+}
+int main() {
+    // Given starting and ending times
+    int opening[] = {1, 8, 3, 2, 6};
+    int closing[] = {5, 10, 6, 5, 9};
+
+    // Number of shops and persons
+    int n = sizeof(opening) / sizeof(opening[0]);
+    int k = 2;
+
+    // Function call
+    cout << maximumShops(opening, closing, n, k) << endl;
+
+    return 0;
+}
