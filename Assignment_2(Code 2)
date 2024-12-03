@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to find the maximum profit
+int maxProfit(int* pr, int n)
+{
+	int profit = 0, CDay = n - 1;
+
+	// Start from the last day
+	while (CDay > 0) {
+		int day = CDay - 1;
+		// Traverse and keep adding the
+		// profit until a day with
+		// price of stock higher
+		// than currentDay is obtained
+		while (day >= 0
+			&& (pr[CDay]
+				> pr[day])) {
+			profit += (pr[CDay]
+					- pr[day]);
+			day--;
+		}
+
+		// Set this day as currentDay
+		CDay = day;
+	}
+	// Return the profit
+	return profit;
+}
+int main()
+{
+	// Given array of prices
+	int pr[] = { 2, 3, 5 };
+
+	int N = sizeof(pr) / sizeof(pr[0]);
+	cout << maxProfit(pr, N);
+	return 0;
+}
